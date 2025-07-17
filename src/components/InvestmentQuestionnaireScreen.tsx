@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {AlertCircle, ArrowRight, FileText, TrendingUp} from "lucide-react";
+import { AlertCircle, FileText, TrendingUp } from "lucide-react";
 import LoadingSpinner from "./helper/LoadingSpinner";
 import { useLanguage } from "@/context/languageContext";
 import MainLayout from "./layout/MainLayout";
@@ -9,14 +9,13 @@ import Link from "next/link";
 import { QuestionResponse, FormData } from "../types";
 import { QuestionnaireService } from "../service/QuestionnaireService";
 
-
 interface InvestmentQuestionnaireScreenProps {
   standalone?: boolean;
   initialSsn?: string;
 }
 
 export default function InvestmentQuestionnaireScreen({
-  standalone = false,
+  standalone = true,
   initialSsn = "",
 }: InvestmentQuestionnaireScreenProps) {
   const router = useRouter();
@@ -33,7 +32,7 @@ export default function InvestmentQuestionnaireScreen({
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [showSummary, setShowSummary] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     const loadQuestions = async () => {
       try {
         setIsLoadingQuestions(true);
@@ -70,55 +69,52 @@ export default function InvestmentQuestionnaireScreen({
 
   const isFormValid = useMemo(() => {
     const requiredFields = questions.map(q => q.question);
-    const additionalFields = standalone ? [] : ["clientName"];
-    const allRequiredFields = [...additionalFields, ...requiredFields];
+    const allRequiredFields = [...requiredFields];
     
     return allRequiredFields.every(field => formData[field] && formData[field].trim() !== "");
-  }, [formData, questions, standalone]);
-
+  }, [formData, questions]);
 
   useEffect(() => {
-  // Only calculate if standalone and form is valid (all questions answered)
-  if (isFormValid) {
-    const calculateRisk = async () => {
-      try {
-        setIsCalculatingRisk(true);
+    // Calculate risk when form is valid
+    if (isFormValid) {
+      const calculateRisk = async () => {
+        try {
+          setIsCalculatingRisk(true);
 
-        const selections: Array<{ questionId: number; answerId: number }> = [];
+          const selections: Array<{ questionId: number; answerId: number }> = [];
 
-        questions.forEach(question => {
-          const selectedAnswer = formData[question.question];
-          if (selectedAnswer) {
-            const answerOption = question.answers.find(answer => answer.answer === selectedAnswer);
-            if (answerOption) {
-              selections.push({
-                questionId: question.id,
-                answerId: answerOption.id
-              });
+          questions.forEach(question => {
+            const selectedAnswer = formData[question.question];
+            if (selectedAnswer) {
+              const answerOption = question.answers.find(answer => answer.answer === selectedAnswer);
+              if (answerOption) {
+                selections.push({
+                  questionId: question.id,
+                  answerId: answerOption.id
+                });
+              }
             }
-          }
-        });
+          });
 
-        const result = await QuestionnaireService.CalculateRisk({
-          ssn: formData.ssn,
-          selections
-        });
+          const result = await QuestionnaireService.CalculateRisk({
+            ssn: formData.ssn,
+            selections
+          });
 
-        setRiskResult(result);
-        setShowSummary(false);  // reset summary if previously shown
-      } catch (error) {
-        console.error("Error calculating risk:", error);
-      } finally {
-        setIsCalculatingRisk(false);
-      }
-    };
+          setRiskResult(result);
+          setShowSummary(false);
+        } catch (error) {
+          console.error("Error calculating risk:", error);
+        } finally {
+          setIsCalculatingRisk(false);
+        }
+      };
 
-    calculateRisk();
-  } else {
-    // Clear result if form is invalid or not standalone
-    setRiskResult("");
-  }
-}, [formData, questions, standalone, isFormValid]);
+      calculateRisk();
+    } else {
+      setRiskResult("");
+    }
+  }, [formData, questions, isFormValid]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -127,21 +123,13 @@ export default function InvestmentQuestionnaireScreen({
     }));
   };
 
-
   const handleContinue = async () => {
     if (!isFormValid) return;
-    if (standalone) {
-      setShowSummary(true);
-      try {
-        await QuestionnaireService.SubmitRiskResult(formData.ssn, riskResult);
-      } catch (error) {
-        console.error("Error submitting risk result:", error);
-      }
-    } else {
-      setIsLoadingQuestions(true);
-      setTimeout(() => {
-        router.push("/investment/calculator");
-      }, 2000);
+    setShowSummary(true);
+    try {
+      await QuestionnaireService.SubmitRiskResult(formData.ssn, riskResult);
+    } catch (error) {
+      console.error("Error submitting risk result:", error);
     }
   };
 
@@ -155,14 +143,14 @@ export default function InvestmentQuestionnaireScreen({
   };
 
   useEffect(() => {
-    if (standalone && showSummary) {
+    if (showSummary) {
       setTimeout(() => window.print(), 100);
     }
-  }, [showSummary, standalone]);
+  }, [showSummary]);
 
   if (questionsError) {
     return (
-      <MainLayout showNavbar={!standalone}>
+      <MainLayout>
         <div className="min-h-screen bg-white flex items-center justify-center">
           <div className="text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
@@ -180,25 +168,23 @@ export default function InvestmentQuestionnaireScreen({
   }
 
   return (
-    <MainLayout showNavbar={!standalone}>
+    <MainLayout>
       <div className="min-h-screen bg-white flex flex-col">
         {isLoadingQuestions && <LoadingSpinner />}
 
-        {standalone && (
-          <div className="bg-white text-black p-4 flex justify-between items-center">
-            <div className="flex-shrink-0">
-              <Link href={`/questionnaire/${formData.ssn}`} className="flex items-center">
-                <div className="bg-[#FFD700] p-2 rounded-lg">
-                  <TrendingUp className="w-6 h-6 text-black" />
-                </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">
+        <div className="bg-white text-black p-4 flex justify-between items-center">
+          <div className="flex-shrink-0">
+            <Link href={`/questionnaire/${formData.ssn}`} className="flex items-center">
+              <div className="bg-[#FFD700] p-2 rounded-lg">
+                <TrendingUp className="w-6 h-6 text-black" />
+              </div>
+              <span className="ml-2 text-xl font-bold text-gray-900">
                 InvestPlatform
               </span>
-              </Link>
-            </div>
-            <LanguageSwitch />
+            </Link>
           </div>
-        )}
+          <LanguageSwitch />
+        </div>
 
         <div className={`flex-1 max-w-2xl mx-auto p-6 ${showSummary ? "pb-4 mb-2" : "pb-20 mb-8"}`}>
           {/* Header */}
@@ -212,34 +198,18 @@ export default function InvestmentQuestionnaireScreen({
           </h2>
 
           <form className="space-y-6 bg-gray-50 p-6 rounded-xl shadow" onSubmit={(e) => e.preventDefault()}>
-            {/* Client Info Row */}
-            <div className="flex gap-6">
-              {!standalone && (
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t("client.name")}
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.clientName}
-                    onChange={(e) => handleInputChange("clientName", e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-colors"
-                    required
-                  />
-                </div>
-              )}
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("ssn")}
-                </label>
-                <input
-                  type="text"
-                  value={formData.ssn}
-                  onChange={(e) => handleInputChange("ssn", e.target.value)}
-                  readOnly={standalone}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-colors"
-                />
-              </div>
+            {/* SSN Field */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("ssn")}
+              </label>
+              <input
+                type="text"
+                value={formData.ssn}
+                onChange={(e) => handleInputChange("ssn", e.target.value)}
+                readOnly
+                className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50"
+              />
             </div>
 
             {/* Dynamic Questions */}
@@ -266,20 +236,18 @@ export default function InvestmentQuestionnaireScreen({
               ))}
             </div>
 
-            {/* Result Field (only show if we have a result) */}
-            {
-              <div className="mt-8">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("result")}:
-                </label>
-                <input
-                  type="text"
-                  value={riskResult}
-                  readOnly
-                  className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 font-medium"
-                />
-              </div>
-            }
+            {/* Result Field */}
+            <div className="mt-8">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("result")}:
+              </label>
+              <input
+                type="text"
+                value={riskResult}
+                readOnly
+                className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 font-medium"
+              />
+            </div>
 
             {!showSummary && <div className="pb-4"></div>}
 
@@ -299,8 +267,7 @@ export default function InvestmentQuestionnaireScreen({
                           : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                     >
-                      {standalone ? t("submit.data") : t("continue")}
-                      <ArrowRight className="w-5 h-5" />
+                      {t("submit.data")}
                     </button>
                     {!isFormValid && (
                       <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity z-50">
@@ -323,12 +290,6 @@ export default function InvestmentQuestionnaireScreen({
               <div className="bg-white shadow rounded-lg overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                   <tbody className="divide-y divide-gray-200">
-                    {!standalone && (
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-6 py-4 font-medium text-gray-900">{t("client.name")}</td>
-                        <td className="px-6 py-4 text-gray-700">{formData.clientName}</td>
-                      </tr>
-                    )}
                     <tr className="hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-900">{t("ssn")}</td>
                       <td className="px-6 py-4 text-gray-700">{formData.ssn}</td>
@@ -339,7 +300,7 @@ export default function InvestmentQuestionnaireScreen({
                           {getQuestionLabel(question)}
                         </td>
                         <td className="px-6 py-4 text-gray-700">
-                          {getOptionLabel(question, formData[question.id])}
+                          {getOptionLabel(question, formData[question.question])}
                         </td>
                       </tr>
                     ))}

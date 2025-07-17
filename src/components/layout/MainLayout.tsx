@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Navbar from "../navigation/Navbar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -10,12 +9,10 @@ interface MainLayoutProps {
 
 export default function MainLayout({
   children,
-  showNavbar = true
+  showNavbar = false
 }: MainLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
-      {showNavbar && <Navbar />}
-
       <main>{children}</main>
     </div>
   );

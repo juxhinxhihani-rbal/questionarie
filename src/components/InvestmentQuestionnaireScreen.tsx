@@ -232,7 +232,7 @@ export default function InvestmentQuestionnaireScreen({
                     ? "bg-gray-50 cursor-not-allowed" 
                     : "bg-white focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
                 }`}
-                placeholder={hasSsnInRoute ? "" : "Enter SSN (e.g., A12345678B)"}
+                placeholder={hasSsnInRoute ? "" : t("ssn.placeholder")}
                 required
               />
             </div>

@@ -40,6 +40,9 @@ const translations = {
     "at": "at",
     "platform.subtitle": "Investment Risk Assessment",
     
+    // Form placeholders
+    "ssn.placeholder": "Enter SSN (e.g., A12345678B)",
+    
     // Language switch
     "switch.language": "AL",
   },
@@ -71,6 +74,9 @@ const translations = {
     "summary.generated": "Ky përmbledhje u gjenerua më",
     "at": "në",
     "platform.subtitle": "Vlerësimi i Rrezikut të Investimit",
+    
+    // Form placeholders
+    "ssn.placeholder": "Shkruani SSN (p.sh., A12345678B)",
     
     // Language switch
     "switch.language": "EN",

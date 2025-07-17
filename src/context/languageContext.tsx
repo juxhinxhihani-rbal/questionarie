@@ -22,6 +22,22 @@ const translations = {
     "error.loading.questions": "Error loading questions",
     "investment.summary": "Investment Summary",
     
+    // Summary screen
+    "back.to.form": "Back to Form",
+    "download.pdf": "Download PDF",
+    "print": "Print",
+    "client.information": "Client Information",
+    "risk.assessment": "Risk Assessment",
+    "detailed.responses": "Detailed Responses",
+    "question": "Question",
+    "response": "Response",
+    "generated.on": "Generated on",
+    "time": "Time",
+    "firma": "Firma",
+    "summary.generated": "This summary was generated on",
+    "at": "at",
+    "platform.subtitle": "Investment Risk Assessment",
+    
     // Language switch
     "switch.language": "AL",
   },
@@ -35,6 +51,22 @@ const translations = {
     "please.complete.form": "Ju lutemi plotësoni të gjitha fushat",
     "error.loading.questions": "Problem me marrjen e pyetjeve",
     "investment.summary": "Përmbledhja e Investimit",
+    
+    // Summary screen
+    "back.to.form": "Kthehu te Formulari",
+    "download.pdf": "Shkarko PDF",
+    "print": "Printo",
+    "client.information": "Informacioni i Klientit",
+    "risk.assessment": "Vlerësimi i Rrezikut",
+    "detailed.responses": "Përgjigjet e Detajuara",
+    "question": "Pyetja",
+    "response": "Përgjigja",
+    "generated.on": "Gjeneruar më",
+    "time": "Ora",
+    "firma": "Firma",
+    "summary.generated": "Ky përmbledhje u gjenerua më",
+    "at": "në",
+    "platform.subtitle": "Vlerësimi i Rrezikut të Investimit",
     
     // Language switch
     "switch.language": "EN",

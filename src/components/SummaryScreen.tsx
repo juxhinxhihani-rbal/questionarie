@@ -52,31 +52,31 @@ export default function SummaryScreen({
           <h1 style="font-size: 28px; font-weight: bold; margin: 0; color: #000;">InvestPlatform</h1>
           <h2 style="font-size: 18px; margin: 10px 0; color: #666;">${t("investment.summary")}</h2>
           <div style="font-size: 11px; color: #666; margin-top: 15px;">
-            <p style="margin: 2px 0;">Generated on: ${new Date().toLocaleDateString()}</p>
-            <p style="margin: 2px 0;">Time: ${new Date().toLocaleTimeString()}</p>
+            <p style="margin: 2px 0;">${t("generated.on")}: ${new Date().toLocaleDateString()}</p>
+            <p style="margin: 2px 0;">${t("time")}: ${new Date().toLocaleTimeString()}</p>
           </div>
         </div>
 
         <div style="margin-bottom: 30px;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
             <div style="flex: 1; margin-right: 20px;">
-              <h3 style="font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px;">Client Information</h3>
+              <h3 style="font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px;">${t("client.information")}</h3>
               <p style="font-size: 18px; font-weight: bold; margin: 0;">${formData.ssn}</p>
             </div>
             <div style="flex: 1;">
-              <h3 style="font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px;">Risk Assessment</h3>
+              <h3 style="font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px;">${t("risk.assessment")}</h3>
               <span style="display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; ${getRiskColorForPDF(riskResult)}">${riskResult}</span>
             </div>
           </div>
         </div>
 
         <div style="margin-bottom: 30px;">
-          <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #000;">Detailed Responses</h2>
+          <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #000;">${t("detailed.responses")}</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
               <tr style="background-color: #f5f5f5;">
-                <th style="border: 1px solid #000; padding: 10px; text-align: left; font-size: 11px; font-weight: bold; width: 40%;">Question</th>
-                <th style="border: 1px solid #000; padding: 10px; text-align: left; font-size: 11px; font-weight: bold;">Response</th>
+                <th style="border: 1px solid #000; padding: 10px; text-align: left; font-size: 11px; font-weight: bold; width: 40%;">${t("question")}</th>
+                <th style="border: 1px solid #000; padding: 10px; text-align: left; font-size: 11px; font-weight: bold;">${t("response")}</th>
               </tr>
             </thead>
             <tbody>
@@ -119,18 +119,15 @@ export default function SummaryScreen({
         <div style="margin-top: 50px; margin-bottom: 30px;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end;">
             <div style="flex: 1;">
-              <p style="margin: 0; font-size: 12px; color: #666;">Firma:</p>
+              <p style="margin: 0; font-size: 12px; color: #666;">${t("firma")}:</p>
               <div style="border-bottom: 2px solid #000; width: 200px; height: 40px; margin-top: 5px;"></div>
-            </div>
-            <div style="flex: 1; text-align: right;">
-              <p style="margin: 0; font-size: 12px; color: #666;">Data: ${new Date().toLocaleDateString()}</p>
             </div>
           </div>
         </div>
 
         <div style="text-align: center; font-size: 10px; color: #666; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 15px;">
-          <p style="margin: 2px 0;">This summary was generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
-          <p style="margin: 2px 0;">InvestPlatform - Investment Risk Assessment</p>
+          <p style="margin: 2px 0;">${t("summary.generated")} ${new Date().toLocaleDateString()} ${t("at")} ${new Date().toLocaleTimeString()}</p>
+          <p style="margin: 2px 0;">InvestPlatform - ${t("platform.subtitle")}</p>
         </div>
       `;
 
@@ -176,8 +173,8 @@ export default function SummaryScreen({
 
   const handleTextDownload = () => {
     let content = `INVESTMENT PLATFORM - ${t("investment.summary")}\n`;
-    content += `Generated on: ${new Date().toLocaleDateString()}\n`;
-    content += `Time: ${new Date().toLocaleTimeString()}\n\n`;
+    content += `${t("generated.on")}: ${new Date().toLocaleDateString()}\n`;
+    content += `${t("time")}: ${new Date().toLocaleTimeString()}\n\n`;
     content += "=" .repeat(50) + "\n\n";
     
     content += `${t("ssn")}: ${formData.ssn}\n\n`;
@@ -188,8 +185,7 @@ export default function SummaryScreen({
     });
     
     content += `${t("result")}: ${riskResult}\n\n`;
-    content += `Firma: _________________\n\n`;
-    content += `Data: ${new Date().toLocaleDateString()}\n`;
+    content += `${t("firma")}: _________________\n\n`;
     
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -250,7 +246,7 @@ export default function SummaryScreen({
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                Back to Form
+                {t("back.to.form")}
               </button>
               <div className="h-6 w-px bg-gray-300"></div>
               <h1 className="text-2xl font-bold text-gray-900">{t("investment.summary")}</h1>
@@ -261,14 +257,14 @@ export default function SummaryScreen({
                 className="flex items-center gap-2 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 <Download className="w-4 h-4" />
-                Download PDF
+                {t("download.pdf")}
               </button>
               <button
                 onClick={handlePrint}
                 className="flex items-center gap-2 px-4 py-2 bg-[#FFD700] text-black hover:bg-[#FFD700]/90 rounded-lg transition-colors font-medium"
               >
                 <Printer className="w-4 h-4" />
-                Print
+                {t("print")}
               </button>
             </div>
           </div>
@@ -280,11 +276,11 @@ export default function SummaryScreen({
         {/* Summary Cards - Removed Questions Completed card */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 print:hidden">
           <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Client Information</h3>
+            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">{t("client.information")}</h3>
             <p className="text-2xl font-bold text-gray-900 mt-2">{formData.ssn}</p>
           </div>
           <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Risk Assessment</h3>
+            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">{t("risk.assessment")}</h3>
             <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium mt-2 ${getRiskColor(riskResult)}`}>
               {riskResult}
             </span>
@@ -294,7 +290,7 @@ export default function SummaryScreen({
         {/* Detailed Summary Table */}
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           <div className="px-6 py-4 bg-gray-50 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">Detailed Responses</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t("detailed.responses")}</h2>
           </div>
           
           <div className="overflow-x-auto">
@@ -302,10 +298,10 @@ export default function SummaryScreen({
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/5">
-                    Question
+                    {t("question")}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Response
+                    {t("response")}
                   </th>
                 </tr>
               </thead>
@@ -360,19 +356,16 @@ export default function SummaryScreen({
         <div className="mt-12 bg-white rounded-lg shadow-sm border p-6">
           <div className="flex justify-between items-end">
             <div className="flex-1">
-              <p className="text-sm text-gray-600 mb-2">Firma:</p>
+              <p className="text-sm text-gray-600 mb-2">{t("firma")}:</p>
               <div className="border-b-2 border-gray-400 w-64 h-12"></div>
-            </div>
-            <div className="flex-1 text-right">
-              <p className="text-sm text-gray-600">Data: {new Date().toLocaleDateString()}</p>
             </div>
           </div>
         </div>
 
         {/* Footer Information */}
         <div className="mt-8 text-center text-sm text-gray-500 print:mt-12">
-          <p>This summary was generated on {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}</p>
-          <p className="mt-1">InvestPlatform - Investment Risk Assessment</p>
+          <p>{t("summary.generated")} {new Date().toLocaleDateString()} {t("at")} {new Date().toLocaleTimeString()}</p>
+          <p className="mt-1">InvestPlatform - {t("platform.subtitle")}</p>
         </div>
       </div>
 

@@ -75,8 +75,15 @@ export default function InvestmentQuestionnaireScreen({
     const requiredFields = ['ssn', ...questions.map(q => q.question)];
     const allRequiredFields = [...requiredFields];
     
-    return allRequiredFields.every(field => formData[field] && formData[field].trim() !== "");
+    const allFieldsFilled = allRequiredFields.every(field => formData[field] && formData[field].trim() !== "");
+    const ssnValid = formData.ssn && formData.ssn.trim().length >= 8;
+    
+    return allFieldsFilled && ssnValid;
   }, [formData, questions]);
+
+  const isSsnValid = useMemo(() => {
+    return !formData.ssn || formData.ssn.trim().length >= 8;
+  }, [formData.ssn]);
 
   useEffect(() => {
     // Calculate risk when form is valid
@@ -229,14 +236,23 @@ export default function InvestmentQuestionnaireScreen({
                 readOnly={hasSsnInRoute}
                minLength={8}
                maxLength={14}
-                className={`w-full p-3 border border-gray-300 rounded-lg transition-colors ${
+                className={`w-full p-3 border rounded-lg transition-colors ${
                   hasSsnInRoute 
-                    ? "bg-gray-50 cursor-not-allowed" 
-                    : "bg-white focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
+                    ? "bg-gray-50 cursor-not-allowed border-gray-300" 
+                    : `bg-white ${
+                        !isSsnValid 
+                          ? "border-red-500 focus:ring-2 focus:ring-red-500 focus:border-red-500" 
+                          : "border-gray-300 focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
+                      }`
                 }`}
                 placeholder={hasSsnInRoute ? "" : t("ssn.placeholder")}
                 required
               />
+              {!isSsnValid && formData.ssn && (
+                <p className="mt-1 text-sm text-red-600">
+                  {t("ssn.min.length")}
+                </p>
+              )}
             </div>
 
             {/* Dynamic Questions */}
@@ -296,10 +312,13 @@ export default function InvestmentQuestionnaireScreen({
                     >
                       {isSubmitting ? "Submitting..." : t("submit.data")}
                     </button>
-                    {!isFormValid && (
+                    {(!isFormValid || !isSsnValid) && (
                       <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity z-50">
                         <div className="bg-gray-900 text-white text-xs py-2 px-3 rounded-lg shadow-lg whitespace-nowrap">
-                          {t("please.complete.form")}
+                          {!isSsnValid && formData.ssn 
+                            ? t("ssn.min.length")
+                            : t("please.complete.form")
+                          }
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900"></div>
                         </div>
                       </div>

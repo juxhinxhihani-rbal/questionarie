@@ -42,6 +42,7 @@ const translations = {
     
     // Form placeholders
     "ssn.placeholder": "Enter SSN (e.g., A12345678B)",
+    "ssn.min.length": "SSN must be at least 8 characters",
     
     // Language switch
     "switch.language": "AL",
@@ -77,6 +78,7 @@ const translations = {
     
     // Form placeholders
     "ssn.placeholder": "Shkruani SSN (p.sh., A12345678B)",
+    "ssn.min.length": "SSN duhet të jetë të paktën 8 karaktere",
     
     // Language switch
     "switch.language": "EN",

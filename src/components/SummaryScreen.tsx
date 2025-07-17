@@ -288,11 +288,7 @@ export default function SummaryScreen({
         </div>
 
         {/* Detailed Summary Table */}
-        <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-          <div className="px-6 py-4 bg-gray-50 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">{t("results")}</h2>
-          </div>
-          
+        <div className="bg-white rounded-lg shadow-sm border overflow-hidden mt-8">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

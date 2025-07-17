@@ -35,6 +35,7 @@ export default function InvestmentQuestionnaireScreen({
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [showSummary, setShowSummary] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ssnTouched, setSsnTouched] = useState(false);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -85,6 +86,7 @@ export default function InvestmentQuestionnaireScreen({
     return !formData.ssn || formData.ssn.trim().length >= 8;
   }, [formData.ssn]);
 
+  const showSsnError = ssnTouched && !isSsnValid && formData.ssn;
   useEffect(() => {
     // Calculate risk when form is valid
     if (isFormValid) {
@@ -132,6 +134,15 @@ export default function InvestmentQuestionnaireScreen({
       ...prev,
       [field]: value,
     }));
+    
+    // Reset touched state when user starts typing in SSN field
+    if (field === 'ssn') {
+      setSsnTouched(false);
+    }
+  };
+
+  const handleSsnBlur = () => {
+    setSsnTouched(true);
   };
 
   const handleContinue = async () => {
@@ -233,6 +244,7 @@ export default function InvestmentQuestionnaireScreen({
                 type="text"
                 value={formData.ssn}
                 onChange={(e) => handleInputChange("ssn", e.target.value)}
+                onBlur={handleSsnBlur}
                 readOnly={hasSsnInRoute}
                minLength={8}
                maxLength={14}
@@ -240,7 +252,7 @@ export default function InvestmentQuestionnaireScreen({
                   hasSsnInRoute 
                     ? "bg-gray-50 cursor-not-allowed border-gray-300" 
                     : `bg-white ${
-                        !isSsnValid 
+                        showSsnError
                           ? "border-red-500 focus:ring-2 focus:ring-red-500 focus:border-red-500" 
                           : "border-gray-300 focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
                       }`
@@ -248,7 +260,7 @@ export default function InvestmentQuestionnaireScreen({
                 placeholder={hasSsnInRoute ? "" : t("ssn.placeholder")}
                 required
               />
-              {!isSsnValid && formData.ssn && (
+              {showSsnError && (
                 <p className="mt-1 text-sm text-red-600">
                   {t("ssn.min.length")}
                 </p>

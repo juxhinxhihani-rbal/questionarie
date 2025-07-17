@@ -352,6 +352,7 @@ export default function InvestmentQuestionnaireScreen({
                   </tbody>
                 </table>
               </div>
+            </div>
           )}
         </div>
 

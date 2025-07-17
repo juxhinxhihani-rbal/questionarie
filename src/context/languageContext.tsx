@@ -74,8 +74,8 @@ const translations = {
     "generated.on": "Gjeneruar më",
     "time": "Ora",
     "firma": "Firma",
-    "signature": "Nënshkrimi",
-    "summary.generated": "Ky përmbledhje u gjenerua më",
+    "signature": "Firma",
+    "summary.generated": "Kjo përmbledhje u gjenerua më",
     "at": "në",
     "platform.subtitle": "Vlerësimi i Rrezikut të Investimit",
     

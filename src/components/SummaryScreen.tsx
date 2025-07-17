@@ -49,7 +49,7 @@ export default function SummaryScreen({
       // Create PDF content
       let content = `
         <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #333;">
-          <h1 style="font-size: 28px; font-weight: bold; margin: 0; color: #000;">InvestPlatform</h1>
+          <h1 style="font-size: 28px; font-weight: bold; margin: 0; color: #000;">Invest Summary</h1>
           <h2 style="font-size: 18px; margin: 10px 0; color: #666;">${t("investment.summary")}</h2>
           <div style="font-size: 11px; color: #666; margin-top: 15px;">
             <p style="margin: 2px 0;">${t("generated.on")}: ${new Date().toLocaleDateString()}</p>
@@ -127,7 +127,7 @@ export default function SummaryScreen({
 
         <div style="text-align: center; font-size: 10px; color: #666; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 15px;">
           <p style="margin: 2px 0;">${t("summary.generated")} ${new Date().toLocaleDateString()} ${t("at")} ${new Date().toLocaleTimeString()}</p>
-          <p style="margin: 2px 0;">InvestPlatform - ${t("platform.subtitle")}</p>
+          <p style="margin: 2px 0;">Invest Summary - ${t("platform.subtitle")}</p>
         </div>
       `;
 
@@ -228,7 +228,7 @@ export default function SummaryScreen({
     <div className="min-h-screen bg-gray-50">
       {/* Print Header - Only visible when printing */}
       <div className="print-header hidden print:block text-center mb-16 pb-4 border-b-2 border-gray-300">
-        <h1 className="text-3xl font-bold text-gray-900">InvestPlatform</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Invest Summary</h1>
         <h2 className="text-xl text-gray-700 mt-2">{t("investment.summary")}</h2>
         <div className="text-sm text-gray-600 mt-2">
           <p>Generated on: {new Date().toLocaleDateString()}</p>
@@ -365,7 +365,7 @@ export default function SummaryScreen({
         {/* Footer Information */}
         <div className="mt-8 text-center text-sm text-gray-500 print:mt-12">
           <p>{t("summary.generated")} {new Date().toLocaleDateString()} {t("at")} {new Date().toLocaleTimeString()}</p>
-          <p className="mt-1">InvestPlatform - {t("platform.subtitle")}</p>
+          <p className="mt-1">Invest Summary - {t("platform.subtitle")}</p>
         </div>
       </div>
 

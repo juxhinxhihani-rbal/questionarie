@@ -228,11 +228,8 @@ export default function SummaryScreen({
     <div className="min-h-screen bg-gray-50">
       {/* Print Header - Only visible when printing */}
       <div className="print-header hidden print:block text-center mb-16 pb-4 border-b-2 border-gray-300">
-        <h1 className="text-3xl font-bold text-gray-900">Invest Summary</h1>
-        <div className="text-sm text-gray-600 mt-2">
-          <p>Generated on: {new Date().toLocaleDateString()}</p>
-          <p>Time: {new Date().toLocaleTimeString()}</p>
-        </div>
+        <h1 className="text-3xl font-bold text-gray-900 m-24">{t("invest.summary")}</h1>
+        
       </div>
 
       {/* Screen Header - Hidden when printing */}
@@ -360,7 +357,7 @@ export default function SummaryScreen({
         {/* Footer Information */}
         <div className="mt-8 text-center text-sm text-gray-500 print:mt-12">
           <p>{t("summary.generated")} {new Date().toLocaleDateString()} {t("at")} {new Date().toLocaleTimeString()}</p>
-          <p className="mt-1">Invest Summary - {t("platform.subtitle")}</p>
+          <p className="mt-1">Invest Platform - {t("platform.subtitle")}</p>
         </div>
       </div>
 

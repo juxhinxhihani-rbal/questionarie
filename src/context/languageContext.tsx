@@ -42,6 +42,7 @@ const translations = {
     "platform.subtitle": "Investment Risk Assessment",
     
     // Form placeholders
+    "invest.summary": "Invest Summary",
     "ssn.placeholder": "Enter SSN (e.g., A12345678B)",
     "ssn.min.length": "SSN must be at least 8 characters",
     
@@ -79,6 +80,7 @@ const translations = {
     "platform.subtitle": "Vlerësimi i Rrezikut të Investimit",
     
     // Form placeholders
+    "invest.summary": "Përmbledhja e Investimit",
     "ssn.placeholder": "Shkruani SSN (p.sh., A12345678B)",
     "ssn.min.length": "SSN duhet të jetë të paktën 8 karaktere",
     

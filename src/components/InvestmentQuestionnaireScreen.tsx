@@ -317,7 +317,6 @@ export default function InvestmentQuestionnaireScreen({
                 <h2 className="text-xl mt-2">{t("investment.summary")}</h2>
                 <p className="text-sm mt-2">Generated on: {new Date().toLocaleDateString()}</p>
               </div>
-              </div>
               
               <div className="bg-white shadow rounded-lg overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -353,7 +352,6 @@ export default function InvestmentQuestionnaireScreen({
                   </tbody>
                 </table>
               </div>
-            </div>
           )}
         </div>
 

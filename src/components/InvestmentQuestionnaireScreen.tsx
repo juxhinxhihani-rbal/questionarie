@@ -227,6 +227,8 @@ export default function InvestmentQuestionnaireScreen({
                 value={formData.ssn}
                 onChange={(e) => handleInputChange("ssn", e.target.value)}
                 readOnly={hasSsnInRoute}
+               minLength={8}
+               maxLength={14}
                 className={`w-full p-3 border border-gray-300 rounded-lg transition-colors ${
                   hasSsnInRoute 
                     ? "bg-gray-50 cursor-not-allowed" 

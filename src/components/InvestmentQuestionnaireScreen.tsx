@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, FileText, TrendingUp } from "lucide-react";
 import LoadingSpinner from "./helper/LoadingSpinner";
+import SummaryScreen from "./SummaryScreen";
 import { useLanguage } from "@/context/languageContext";
 import MainLayout from "./layout/MainLayout";
 import LanguageSwitch from "./helper/LanguageSwitch";
@@ -151,8 +152,8 @@ export default function InvestmentQuestionnaireScreen({
     return option ? option.answer : optionValue;
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handleBackToForm = () => {
+    setShowSummary(false);
   };
 
   if (questionsError) {
@@ -174,6 +175,17 @@ export default function InvestmentQuestionnaireScreen({
     );
   }
 
+  // Show summary screen
+  if (showSummary) {
+    return (
+      <SummaryScreen
+        formData={formData}
+        questions={questions}
+        riskResult={riskResult}
+        onBack={handleBackToForm}
+      />
+    );
+  }
   return (
     <MainLayout>
       <div className="min-h-screen bg-white flex flex-col">
@@ -296,131 +308,8 @@ export default function InvestmentQuestionnaireScreen({
             )}
           </form>
 
-          {/* Summary Table */}
-          {showSummary && (
-            <div className="mt-8 printable-content">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">{t("investment.summary")}</h2>
-                <button
-                  onClick={handlePrint}
-                  className="bg-[#FFD700] text-black px-4 py-2 rounded-lg hover:bg-[#FFD700]/90 transition-colors flex items-center gap-2 no-print"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                  </svg>
-                  Print
-                </button>
-              </div>
-              
-              <div className="print-header" style={{ display: 'none' }}>
-                <h1 className="text-2xl font-bold">InvestPlatform</h1>
-                <h2 className="text-xl mt-2">{t("investment.summary")}</h2>
-                <p className="text-sm mt-2">Generated on: {new Date().toLocaleDateString()}</p>
-              </div>
-              
-              <div className="bg-white shadow rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Field
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Response
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-gray-50">
-                      <td className="px-6 py-4 font-medium text-gray-900">{t("ssn")}</td>
-                      <td className="px-6 py-4 text-gray-700">{formData.ssn}</td>
-                    </tr>
-                    {questions.map((question) => (
-                      <tr key={question.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 font-medium text-gray-900">
-                          {getQuestionLabel(question)}
-                        </td>
-                        <td className="px-6 py-4 text-gray-700">
-                          {getOptionLabel(question, formData[question.question])}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr className="hover:bg-gray-50 bg-yellow-50 result-row">
-                      <td className="px-6 py-4 font-bold text-gray-900">{t("result")}</td>
-                      <td className="px-6 py-4 font-bold text-gray-900">{riskResult}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
         </div>
 
-        <style jsx global>{`
-          @media print {
-            /* Show print header only when printing */
-            .print-header {
-              display: block !important;
-              text-align: center;
-              margin-bottom: 30px;
-              border-bottom: 2px solid #000;
-              padding-bottom: 20px;
-            }
-            
-            /* Hide everything by default */
-            body * {
-              visibility: hidden;
-            }
-            
-            /* Show only the printable content */
-            .printable-content,
-            .printable-content * {
-              visibility: visible;
-            }
-            
-            /* Position the printable content */
-            .printable-content {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-            }
-            
-            /* Hide interactive elements */
-            button,
-            .no-print {
-              display: none !important;
-            }
-            
-            /* Ensure proper spacing and layout for print */
-            .printable-content {
-              padding: 20px;
-              font-size: 12pt;
-              line-height: 1.4;
-            }
-            
-            /* Style the header for print */
-            
-            /* Style the table for print */
-            table {
-              width: 100%;
-              border-collapse: collapse;
-              margin-top: 20px;
-            }
-            
-            table td {
-              border: 1px solid #000;
-              padding: 8px;
-              vertical-align: top;
-            }
-            
-            /* Highlight the result row */
-            .result-row td {
-              background-color: #f0f0f0 !important;
-              font-weight: bold;
-            }
-          }
-        `}</style>
       </div>
     </MainLayout>
   );

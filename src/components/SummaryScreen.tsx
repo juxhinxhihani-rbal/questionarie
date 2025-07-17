@@ -71,7 +71,7 @@ export default function SummaryScreen({
         </div>
 
         <div style="margin-bottom: 30px;">
-          <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #000;">${t("detailed.responses")}</h2>
+          <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #000;">${t("investment.summary.print")}</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
               <tr style="background-color: #f5f5f5;">
@@ -290,7 +290,7 @@ export default function SummaryScreen({
         {/* Detailed Summary Table */}
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           <div className="px-6 py-4 bg-gray-50 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">{t("detailed.responses")}</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t("results")}</h2>
           </div>
           
           <div className="overflow-x-auto">
@@ -353,7 +353,7 @@ export default function SummaryScreen({
         </div>
 
         {/* Signature Section */}
-        <div className="mt-12 bg-white rounded-lg shadow-sm border p-6">
+        <div className="mt-12 bg-white rounded-lg shadow-sm border p-6 print:block hidden">
           <div className="flex justify-between items-end">
             <div className="flex-1">
               <p className="text-sm text-gray-600 mb-2">{t("firma")}:</p>

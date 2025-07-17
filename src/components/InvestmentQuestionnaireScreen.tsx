@@ -72,7 +72,7 @@ export default function InvestmentQuestionnaireScreen({
   }, [initialSsn]);
 
   const isFormValid = useMemo(() => {
-    const requiredFields = questions.map(q => q.question);
+    const requiredFields = ['ssn', ...questions.map(q => q.question)];
     const allRequiredFields = [...requiredFields];
     
     return allRequiredFields.every(field => formData[field] && formData[field].trim() !== "");
@@ -220,7 +220,7 @@ export default function InvestmentQuestionnaireScreen({
             {/* SSN Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("ssn")}
+                {t("ssn")} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -242,7 +242,7 @@ export default function InvestmentQuestionnaireScreen({
               {questions.map((question) => (
                 <div key={question.id} className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    {getQuestionLabel(question)}
+                    {getQuestionLabel(question)} <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={formData[question.question] || ""}

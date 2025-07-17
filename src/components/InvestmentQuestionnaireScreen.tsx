@@ -33,6 +33,7 @@ export default function InvestmentQuestionnaireScreen({
   const [riskResult, setRiskResult] = useState<string>("");
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [showSummary, setShowSummary] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -127,11 +128,17 @@ export default function InvestmentQuestionnaireScreen({
 
   const handleContinue = async () => {
     if (!isFormValid) return;
-    setShowSummary(true);
+    
     try {
+      setIsSubmitting(true);
       await QuestionnaireService.SubmitRiskResult(formData.ssn, riskResult);
+      setShowSummary(true);
     } catch (error) {
       console.error("Error submitting risk result:", error);
+      // Still show summary even if submission fails
+      setShowSummary(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -144,11 +151,9 @@ export default function InvestmentQuestionnaireScreen({
     return option ? option.answer : optionValue;
   };
 
-  useEffect(() => {
-    if (showSummary) {
-      setTimeout(() => window.print(), 100);
-    }
-  }, [showSummary]);
+  const handlePrint = () => {
+    window.print();
+  };
 
   if (questionsError) {
     return (
@@ -266,16 +271,16 @@ export default function InvestmentQuestionnaireScreen({
                   <div className="relative group">
                     <button
                       type="button"
-                      disabled={!isFormValid || isCalculatingRisk}
+                      disabled={!isFormValid || isCalculatingRisk || isSubmitting}
                       onClick={handleContinue}
                       className={`w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors
                       ${
-                        isFormValid && !isCalculatingRisk
+                        isFormValid && !isCalculatingRisk && !isSubmitting
                           ? "bg-[#FFD700] text-black hover:bg-[#FFD700]/90 shadow-md hover:shadow-lg"
                           : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                     >
-                      {t("submit.data")}
+                      {isSubmitting ? "Submitting..." : t("submit.data")}
                     </button>
                     {!isFormValid && (
                       <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity z-50">
@@ -294,10 +299,24 @@ export default function InvestmentQuestionnaireScreen({
           {/* Summary Table */}
           {showSummary && (
             <div className="mt-8 printable-content">
-              <div className="print-header">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">{t("investment.summary")}</h2>
+                <button
+                  onClick={handlePrint}
+                  className="bg-[#FFD700] text-black px-4 py-2 rounded-lg hover:bg-[#FFD700]/90 transition-colors flex items-center gap-2 no-print"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print
+                </button>
+              </div>
+              
+              <div className="print-header" style={{ display: 'none' }}>
                 <h1 className="text-2xl font-bold">InvestPlatform</h1>
                 <h2 className="text-xl mt-2">{t("investment.summary")}</h2>
                 <p className="text-sm mt-2">Generated on: {new Date().toLocaleDateString()}</p>
+              </div>
               </div>
               
               <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -340,6 +359,15 @@ export default function InvestmentQuestionnaireScreen({
 
         <style jsx global>{`
           @media print {
+            /* Show print header only when printing */
+            .print-header {
+              display: block !important;
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #000;
+              padding-bottom: 20px;
+            }
+            
             /* Hide everything by default */
             body * {
               visibility: hidden;
@@ -373,12 +401,6 @@ export default function InvestmentQuestionnaireScreen({
             }
             
             /* Style the header for print */
-            .print-header {
-              text-align: center;
-              margin-bottom: 30px;
-              border-bottom: 2px solid #000;
-              padding-bottom: 20px;
-            }
             
             /* Style the table for print */
             table {

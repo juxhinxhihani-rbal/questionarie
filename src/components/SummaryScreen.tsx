@@ -57,7 +57,7 @@ export default function SummaryScreen({
           </div>
         </div>
 
-        <div style="margin-bottom: 30px;">
+        <div style="margin-bottom: 80px;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
             <div style="flex: 1; margin-right: 20px;">
               <h3 style="font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px;">${t("client.information")}</h3>
@@ -227,7 +227,7 @@ export default function SummaryScreen({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Print Header - Only visible when printing */}
-      <div className="print-header hidden print:block text-center mb-8 pb-4 border-b-2 border-gray-300">
+      <div className="print-header hidden print:block text-center mb-16 pb-4 border-b-2 border-gray-300">
         <h1 className="text-3xl font-bold text-gray-900">InvestPlatform</h1>
         <h2 className="text-xl text-gray-700 mt-2">{t("investment.summary")}</h2>
         <div className="text-sm text-gray-600 mt-2">
@@ -396,6 +396,10 @@ export default function SummaryScreen({
           }
           
           /* Show print header */
+          .print-header {
+            margin-bottom: 60px !important;
+          }
+          
           .print-header,
           .print-header * {
             visibility: visible;

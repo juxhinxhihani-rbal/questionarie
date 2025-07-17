@@ -229,7 +229,6 @@ export default function SummaryScreen({
       {/* Print Header - Only visible when printing */}
       <div className="print-header hidden print:block text-center mb-16 pb-4 border-b-2 border-gray-300">
         <h1 className="text-3xl font-bold text-gray-900">Invest Summary</h1>
-        <h2 className="text-xl text-gray-700 mt-2">{t("investment.summary")}</h2>
         <div className="text-sm text-gray-600 mt-2">
           <p>Generated on: {new Date().toLocaleDateString()}</p>
           <p>Time: {new Date().toLocaleTimeString()}</p>

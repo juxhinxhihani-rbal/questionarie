@@ -20,6 +20,8 @@ export default function InvestmentQuestionnaireScreen({
 }: InvestmentQuestionnaireScreenProps) {
   const router = useRouter();
   const { t, language } = useLanguage();
+  const hasSsnInRoute = Boolean(initialSsn && initialSsn.trim() !== "");
+  
   const [formData, setFormData] = useState<FormData>({
     clientName: "",
     ssn: initialSsn,
@@ -207,8 +209,14 @@ export default function InvestmentQuestionnaireScreen({
                 type="text"
                 value={formData.ssn}
                 onChange={(e) => handleInputChange("ssn", e.target.value)}
-                readOnly
-                className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50"
+                readOnly={hasSsnInRoute}
+                className={`w-full p-3 border border-gray-300 rounded-lg transition-colors ${
+                  hasSsnInRoute 
+                    ? "bg-gray-50 cursor-not-allowed" 
+                    : "bg-white focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
+                }`}
+                placeholder={hasSsnInRoute ? "" : "Enter SSN (e.g., A12345678B)"}
+                required
               />
             </div>
 

@@ -293,10 +293,25 @@ export default function InvestmentQuestionnaireScreen({
 
           {/* Summary Table */}
           {showSummary && (
-            <div className="mt-8">
-              <h3 className="text-xl font-bold mb-4">{t("investment.summary")}</h3>
+            <div className="mt-8 printable-content">
+              <div className="print-header">
+                <h1 className="text-2xl font-bold">InvestPlatform</h1>
+                <h2 className="text-xl mt-2">{t("investment.summary")}</h2>
+                <p className="text-sm mt-2">Generated on: {new Date().toLocaleDateString()}</p>
+              </div>
+              
               <div className="bg-white shadow rounded-lg overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Field
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Response
+                      </th>
+                    </tr>
+                  </thead>
                   <tbody className="divide-y divide-gray-200">
                     <tr className="hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-900">{t("ssn")}</td>
@@ -312,7 +327,7 @@ export default function InvestmentQuestionnaireScreen({
                         </td>
                       </tr>
                     ))}
-                    <tr className="hover:bg-gray-50 bg-yellow-50">
+                    <tr className="hover:bg-gray-50 bg-yellow-50 result-row">
                       <td className="px-6 py-4 font-bold text-gray-900">{t("result")}</td>
                       <td className="px-6 py-4 font-bold text-gray-900">{riskResult}</td>
                     </tr>
@@ -325,20 +340,63 @@ export default function InvestmentQuestionnaireScreen({
 
         <style jsx global>{`
           @media print {
+            /* Hide everything by default */
             body * {
               visibility: hidden;
             }
-            .container,
-            .container * {
+            
+            /* Show only the printable content */
+            .printable-content,
+            .printable-content * {
               visibility: visible;
             }
-            .container {
+            
+            /* Position the printable content */
+            .printable-content {
               position: absolute;
               left: 0;
               top: 0;
+              width: 100%;
             }
-            button {
+            
+            /* Hide interactive elements */
+            button,
+            .no-print {
               display: none !important;
+            }
+            
+            /* Ensure proper spacing and layout for print */
+            .printable-content {
+              padding: 20px;
+              font-size: 12pt;
+              line-height: 1.4;
+            }
+            
+            /* Style the header for print */
+            .print-header {
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #000;
+              padding-bottom: 20px;
+            }
+            
+            /* Style the table for print */
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+            }
+            
+            table td {
+              border: 1px solid #000;
+              padding: 8px;
+              vertical-align: top;
+            }
+            
+            /* Highlight the result row */
+            .result-row td {
+              background-color: #f0f0f0 !important;
+              font-weight: bold;
             }
           }
         `}</style>

@@ -119,7 +119,7 @@ export default function SummaryScreen({
         <div style="margin-top: 50px; margin-bottom: 30px;">
           <div style="display: flex; justify-content: space-between; align-items: flex-end;">
             <div style="flex: 1;">
-              <p style="margin: 0; font-size: 12px; color: #666;">${t("firma")}:</p>
+              <p style="margin: 0; font-size: 12px; color: #666;">${t("signature")}:</p>
               <div style="border-bottom: 2px solid #000; width: 200px; height: 40px; margin-top: 5px;"></div>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function SummaryScreen({
     });
     
     content += `${t("result")}: ${riskResult}\n\n`;
-    content += `${t("firma")}: _________________\n\n`;
+    content += `${t("signature")}: _________________\n\n`;
     
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -352,7 +352,7 @@ export default function SummaryScreen({
         <div className="mt-12 bg-white rounded-lg shadow-sm border p-6 print:block hidden">
           <div className="flex justify-between items-end">
             <div className="flex-1">
-              <p className="text-sm text-gray-600 mb-2">{t("firma")}:</p>
+              <p className="text-sm text-gray-600 mb-2">{t("signature")}:</p>
               <div className="border-b-2 border-gray-400 w-64 h-12"></div>
             </div>
           </div>

@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable standalone output for Docker
+  output: 'standalone',
   // Enable source maps in development
   webpack: (config, { dev }) => {
     if (dev) {

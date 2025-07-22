@@ -5,11 +5,6 @@ interface ApiConfig {
   API_BASE_URL: string;
 }
 
-// Default configuration
-const DEFAULT_CONFIG: ApiConfig = {
-  API_BASE_URL: "https://localhost:7210//"
-};
-
 // Function to load configuration from env.json
 const loadConfig = async (): Promise<ApiConfig> => {
   try {
@@ -18,18 +13,22 @@ const loadConfig = async (): Promise<ApiConfig> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const config = await response.json();
+    
+    if (!config.API_BASE_URL) {
+      throw new Error('API_BASE_URL not found in env.json');
+    }
+    
     return {
-      API_BASE_URL: config.API_BASE_URL || DEFAULT_CONFIG.API_BASE_URL
+      API_BASE_URL: config.API_BASE_URL
     };
   } catch (error) {
-    console.warn('Failed to load env.json, using default configuration:', error);
-    return DEFAULT_CONFIG;
+    console.error('Failed to load env.json:', error);
+    throw new Error('API configuration could not be loaded. Please ensure env.json exists with API_BASE_URL.');
   }
 };
 
-// Create axios instance with default config
+// Create axios instance without base URL initially
 export const api = axios.create({
-  baseURL: DEFAULT_CONFIG.API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -49,12 +48,13 @@ const initializeApi = async () => {
     console.log('API initialized with base URL:', config.API_BASE_URL);
   } catch (error) {
     console.error('Failed to initialize API configuration:', error);
+    throw error;
   }
 };
 
 // Auto-initialize when module loads (client-side only)
 if (typeof window !== 'undefined') {
-  initializeApi();
+  initializeApi().catch(console.error);
 }
 
 // Export function to manually initialize if needed
@@ -66,6 +66,11 @@ api.interceptors.request.use(
     if (!configLoaded && typeof window !== 'undefined') {
       await initializeApi();
     }
+    
+    if (!api.defaults.baseURL) {
+      throw new Error('API base URL not configured. Please check env.json file.');
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)

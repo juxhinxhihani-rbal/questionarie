@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, FileText, TrendingUp } from "lucide-react";

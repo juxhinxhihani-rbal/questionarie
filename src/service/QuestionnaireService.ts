@@ -13,13 +13,16 @@ export const QuestionnaireService = {
   async GetQuestions(
     language: GetQuestionsRequest
   ): Promise<QuestionResponse[]> {
+    // Initialize API base URL before making request
+    await initializeApiBaseUrl();
+    
     if (USE_MOCK_API) {
       console.log("Using mock API for questions");
       return await mockApi.getQuestions(language);
     }
 
     try {
-      await initializeApiBaseUrl();
+      console.log("Fetching questions for language:", language.language);
       const languageRequest = language.language == "al" ? "sq-AL" : "en-US";
       const response = await api.get<QuestionResponse[]>(
         `calculator/api/risk-questions?language=${languageRequest}`
@@ -27,20 +30,21 @@ export const QuestionnaireService = {
       
       return response.data;
     } catch (error) {
-      console.error("Failed to fetch questions from real API:", error);
-      console.log("Falling back to mock API");
-      return await mockApi.getQuestions(language);
+      console.error("Failed to fetch questions:", error);
+      throw error;
     }
   },
 
   async CalculateRisk(request: RiskCalculationRequest): Promise<string> {
+    // Initialize API base URL before making request
+    await initializeApiBaseUrl();
+    
     if (USE_MOCK_API) {
       console.log("Using mock API for risk calculation");
       return await mockApi.calculateRisk(request);
     }
 
     try {
-      await initializeApiBaseUrl();
       const response = await api.post(`calculator/api/calculate-risk`, request);
       return response.data;
     } catch (error) {
@@ -51,13 +55,15 @@ export const QuestionnaireService = {
   },
 
   async SubmitRiskResult(ssn: string, riskResult: string): Promise<void> {
+    // Initialize API base URL before making request
+    await initializeApiBaseUrl();
+    
     if (USE_MOCK_API) {
       console.log("Using mock API for risk result submission");
       return await mockApi.submitRiskResult(ssn, riskResult);
     }
 
     try {
-      await initializeApiBaseUrl();
       const riskRequestBody = {
         ssn,
         riskResult,

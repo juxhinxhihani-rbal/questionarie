@@ -1,16 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable standalone output for Docker
-  output: 'standalone',
+  // Enable static export for nginx deployment
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   // Enable source maps in development
   webpack: (config, { dev }) => {
     if (dev) {
       config.devtool = 'eval-source-map';
     }
     return config;
-  },
-  images: {
-    domains: ["images.unsplash.com"],
   },
 };
 

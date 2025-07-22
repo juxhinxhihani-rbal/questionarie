@@ -9,15 +9,6 @@ import { mockApi } from "./mockApi";
 // Toggle between mock and real API
 const USE_MOCK_API = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_USE_MOCK_API !== 'false';
 
-// Initialize API base URL once
-let apiInitialized = false;
-const ensureApiInitialized = async () => {
-  if (!apiInitialized) {
-    await initializeApiBaseUrl();
-    apiInitialized = true;
-  }
-};
-
 export const QuestionnaireService = {
   async GetQuestions(
     language: GetQuestionsRequest
@@ -28,7 +19,7 @@ export const QuestionnaireService = {
     }
 
     try {
-      await ensureApiInitialized();
+      await initializeApiBaseUrl();
       const languageRequest = language.language == "al" ? "sq-AL" : "en-US";
       const response = await api.get<QuestionResponse[]>(
         `calculator/api/risk-questions?language=${languageRequest}`
@@ -49,7 +40,7 @@ export const QuestionnaireService = {
     }
 
     try {
-      await ensureApiInitialized();
+      await initializeApiBaseUrl();
       const response = await api.post(`calculator/api/calculate-risk`, request);
       return response.data;
     } catch (error) {
@@ -66,7 +57,7 @@ export const QuestionnaireService = {
     }
 
     try {
-      await ensureApiInitialized();
+      await initializeApiBaseUrl();
       const riskRequestBody = {
         ssn,
         riskResult,

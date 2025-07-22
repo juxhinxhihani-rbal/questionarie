@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Initialize with empty base URL
+// Create API instance without baseURL initially
 export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -10,14 +10,20 @@ export const api = axios.create({
 
 // Function to initialize API base URL from env.json
 export const initializeApiBaseUrl = async () => {
-  // Only run in browser environment
   if (typeof window !== 'undefined') {
     try {
       const response = await fetch('/env.json');
       const config = await response.json();
-      api.defaults.baseURL = config.API_BASE_URL;
+      
+      if (config.API_BASE_URL) {
+        api.defaults.baseURL = config.API_BASE_URL;
+        console.log('API initialized with baseURL:', config.API_BASE_URL);
+      } else {
+        throw new Error('API_BASE_URL not found in env.json');
+      }
     } catch (error) {
       console.error('Failed to load env.json:', error);
+      throw error;
     }
   }
 };

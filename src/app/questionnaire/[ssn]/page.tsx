@@ -7,6 +7,13 @@ export function generateStaticParams() {
   return [];
 }
 
+// Generate static params for build-time rendering
+export function generateStaticParams() {
+  // Return empty array to generate no static paths at build time
+  // This allows the route to work dynamically at runtime
+  return [];
+}
+
 interface PageProps {
   params: {
     ssn: string;

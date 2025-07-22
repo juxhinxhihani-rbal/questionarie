@@ -7,7 +7,7 @@
     "dev:debug": "cross-env NODE_OPTIONS=--inspect next dev",
     "dev:debug-brk": "cross-env NODE_OPTIONS=--inspect-brk next dev",
     "build": "next build",
-    "export": "echo 'Export completed - files are in out/ directory'",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint"
   },

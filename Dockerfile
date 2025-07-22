@@ -1,7 +1,6 @@
 FROM artifacts.rbi.tech/docker-io-docker-proxy/node:18-bullseye-slim AS build
 
 WORKDIR /app
-COPY .npmrc .
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci --prefer-offline --no-audit

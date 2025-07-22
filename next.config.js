@@ -6,6 +6,17 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Disable server-side features for static export
+  experimental: {
+    appDir: true,
+  },
+  // Configure export paths
+  exportPathMap: async function () {
+    return {
+      '/': { page: '/' },
+      '/questionnaire/[ssn]': { page: '/questionnaire/[ssn]' },
+    };
+  },
   // Enable source maps in development
   webpack: (config, { dev }) => {
     if (dev) {

@@ -6,17 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Disable server-side features for static export
-  experimental: {
-    appDir: true,
-  },
-  // Configure export paths
-  exportPathMap: async function () {
-    return {
-      '/': { page: '/' },
-      '/questionnaire/[ssn]': { page: '/questionnaire/[ssn]' },
-    };
-  },
+  // Remove exportPathMap as it's not compatible with App Router
+  // App Router uses generateStaticParams() in page components instead
+  
   // Enable source maps in development
   webpack: (config, { dev }) => {
     if (dev) {

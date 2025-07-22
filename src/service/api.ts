@@ -12,7 +12,7 @@ export const api = axios.create({
 export const initializeApiBaseUrl = async () => {
   if (typeof window !== 'undefined') {
     try {
-      const response = await fetch(`${window.location.origin}/env.json`);
+      const response = await fetch("env.json");
       const config = await response.json();
       
       if (config.API_BASE_URL) {

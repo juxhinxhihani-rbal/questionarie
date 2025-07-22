@@ -3,18 +3,18 @@ import {
   QuestionResponse,
   RiskCalculationRequest,
 } from "../types";
-import { api, initializeApiBaseUrl } from "./api";
+import { api, initApi } from "./api";
 
 export const QuestionnaireService = {
   async GetQuestions(
     language: GetQuestionsRequest
   ): Promise<QuestionResponse[]> {
-    // Initialize API base URL before making request
-    await initializeApiBaseUrl();
+    // Initialize API before making request
+    await initApi();
     
     try {
       console.log("Fetching questions for language:", language.language);
-      const languageRequest = language.language == "al" ? "sq-AL" : "en-US";
+      const languageRequest = language.language != "al" ? "en-US" : "sq-AL";
       const response = await api.get<QuestionResponse[]>(
         `calculator/api/risk-questions?language=${languageRequest}`
       );
@@ -27,8 +27,8 @@ export const QuestionnaireService = {
   },
 
   async CalculateRisk(request: RiskCalculationRequest): Promise<string> {
-    // Initialize API base URL before making request
-    await initializeApiBaseUrl();
+    // Initialize API before making request
+    await initApi();
     
     try {
       const response = await api.post(`calculator/api/calculate-risk`, request);
@@ -40,8 +40,8 @@ export const QuestionnaireService = {
   },
 
   async SubmitRiskResult(ssn: string, riskResult: string): Promise<void> {
-    // Initialize API base URL before making request
-    await initializeApiBaseUrl();
+    // Initialize API before making request
+    await initApi();
     
     try {
       const riskRequestBody = {

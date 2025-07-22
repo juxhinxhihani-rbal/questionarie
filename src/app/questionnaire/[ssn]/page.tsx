@@ -1,5 +1,4 @@
 import InvestmentQuestionnaireScreen from "@/components/InvestmentQuestionnaireScreen";
-import { useParams } from "next/navigation";
 
 // Generate static params for build-time rendering
 export function generateStaticParams() {
@@ -8,9 +7,14 @@ export function generateStaticParams() {
   return [];
 }
 
-function QuestionnairePage() {
-  const params = useParams();
-  const ssnParam = Array.isArray(params?.ssn) ? params?.ssn[0] : (params?.ssn as string) || "";
+interface PageProps {
+  params: {
+    ssn: string;
+  };
+}
+
+function QuestionnairePage({ params }: PageProps) {
+  const ssnParam = params.ssn || "";
   
   const isValidSsn = /^[A-Za-z]\d{8}[A-Za-z]$/.test(ssnParam);
   
@@ -29,5 +33,4 @@ function QuestionnairePage() {
   return <InvestmentQuestionnaireScreen standalone initialSsn={ssnParam} />;
 }
 
-"use client";
 export default QuestionnairePage;

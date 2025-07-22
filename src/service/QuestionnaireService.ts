@@ -4,10 +4,6 @@ import {
   RiskCalculationRequest,
 } from "../types";
 import { api, initializeApiBaseUrl } from "./api";
-import { mockApi } from "./mockApi";
-
-// Toggle between mock and real API
-const USE_MOCK_API = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_USE_MOCK_API !== 'false';
 
 export const QuestionnaireService = {
   async GetQuestions(
@@ -16,11 +12,6 @@ export const QuestionnaireService = {
     // Initialize API base URL before making request
     await initializeApiBaseUrl();
     
-    if (USE_MOCK_API) {
-      console.log("Using mock API for questions");
-      return await mockApi.getQuestions(language);
-    }
-
     try {
       console.log("Fetching questions for language:", language.language);
       const languageRequest = language.language == "al" ? "sq-AL" : "en-US";
@@ -39,18 +30,12 @@ export const QuestionnaireService = {
     // Initialize API base URL before making request
     await initializeApiBaseUrl();
     
-    if (USE_MOCK_API) {
-      console.log("Using mock API for risk calculation");
-      return await mockApi.calculateRisk(request);
-    }
-
     try {
       const response = await api.post(`calculator/api/calculate-risk`, request);
       return response.data;
     } catch (error) {
-      console.error("Failed to calculate risk from real API:", error);
-      console.log("Falling back to mock API");
-      return await mockApi.calculateRisk(request);
+      console.error("Failed to calculate risk:", error);
+      throw error;
     }
   },
 
@@ -58,11 +43,6 @@ export const QuestionnaireService = {
     // Initialize API base URL before making request
     await initializeApiBaseUrl();
     
-    if (USE_MOCK_API) {
-      console.log("Using mock API for risk result submission");
-      return await mockApi.submitRiskResult(ssn, riskResult);
-    }
-
     try {
       const riskRequestBody = {
         ssn,
@@ -71,9 +51,8 @@ export const QuestionnaireService = {
 
       await api.post(`utility/api/risk`, riskRequestBody);
     } catch (error) {
-      console.error("Failed to submit risk result to real API:", error);
-      console.log("Falling back to mock API");
-      return await mockApi.submitRiskResult(ssn, riskResult);
+      console.error("Failed to submit risk result:", error);
+      throw error;
     }
   }
 };

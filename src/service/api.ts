@@ -1,25 +1,26 @@
 import axios from "axios";
 
-// Load API base URL from env.json
-let API_BASE_URL = "";
-
-// Fetch the API URL from env.json
-fetch('/env.json')
-  .then(response => response.json())
-  .then(config => {
-    API_BASE_URL = config.API_BASE_URL;
-    api.defaults.baseURL = API_BASE_URL;
-  })
-  .catch(error => {
-    console.error('Failed to load env.json:', error);
-  });
-
+// Initialize with empty base URL
 export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 100000,
 });
+
+// Function to initialize API base URL from env.json
+export const initializeApiBaseUrl = async () => {
+  // Only run in browser environment
+  if (typeof window !== 'undefined') {
+    try {
+      const response = await fetch('/env.json');
+      const config = await response.json();
+      api.defaults.baseURL = config.API_BASE_URL;
+    } catch (error) {
+      console.error('Failed to load env.json:', error);
+    }
+  }
+};
 
 api.interceptors.response.use(
   (response) => response,

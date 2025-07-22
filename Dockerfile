@@ -5,7 +5,7 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci --prefer-offline --no-audit
 COPY . .
-RUN npm run build && npm run export
+RUN npm run build
 
 FROM docker.artifacts.rbi.tech/nginx:stable
 COPY nginx.conf /etc/nginx/nginx.conf

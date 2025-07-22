@@ -3,6 +3,13 @@
 import InvestmentQuestionnaireScreen from "@/components/InvestmentQuestionnaireScreen";
 import { useParams } from "next/navigation";
 
+// Generate static params for build-time rendering
+export function generateStaticParams() {
+  // Return empty array to generate no static paths at build time
+  // This allows the route to work dynamically at runtime
+  return [];
+}
+
 export default function QuestionnairePage() {
   const params = useParams();
   const ssnParam = Array.isArray(params?.ssn) ? params?.ssn[0] : (params?.ssn as string) || "";

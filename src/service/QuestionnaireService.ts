@@ -39,11 +39,10 @@ export const QuestionnaireService = {
 
     try {
       // Initialize API before making request
-      await initApi();
       
       console.log("Fetching questions for language:", language.language);
       const languageRequest = language.language != "al" ? "en-US" : "sq-AL";
-      const response = await api.get<QuestionResponse[]>(
+      const response = await api.get(
         `calculator/api/risk-questions?language=${languageRequest}`
       );
       

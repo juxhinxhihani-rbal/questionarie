@@ -2,10 +2,16 @@ import InvestmentQuestionnaireScreen from "@/components/InvestmentQuestionnaireS
 
 // Generate static params for build-time rendering
 export function generateStaticParams() {
-  // Return a sample param to satisfy static export requirements
+  // Return empty array to allow all dynamic routes
   return [
-    { ssn: 'sample' }
+    { ssn: 'juxhin' },
+    { ssn: 'sample' },
+    { ssn: 'A12345678B' }
   ];
+}
+
+// Allow dynamic params that aren't pre-generated
+export const dynamicParams = true;
 }
 
 interface PageProps {

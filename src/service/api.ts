@@ -30,5 +30,4 @@ export async function initApi() {
                 throw new Error("Error setting up the request");
             }
         }
-    );
 }

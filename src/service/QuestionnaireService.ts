@@ -9,7 +9,8 @@ import { api, initApi } from "./api";
 const mockQuestions: QuestionResponse[] = [
   {
     id: 1,
-    questionText: "What is your investment experience?",
+    question: "What is your investment experience?",
+    order: 1,
     answers: [
       { id: 1, answerText: "Beginner", score: 1 },
       { id: 2, answerText: "Intermediate", score: 3 },
@@ -18,7 +19,8 @@ const mockQuestions: QuestionResponse[] = [
   },
   {
     id: 2,
-    questionText: "What is your risk tolerance?",
+    question: "What is your risk tolerance?",
+    order: 2,
     answers: [
       { id: 1, answerText: "Conservative", score: 1 },
       { id: 2, answerText: "Moderate", score: 3 },
@@ -61,7 +63,16 @@ export const QuestionnaireService = {
     if (process.env.NEXT_PUBLIC_USE_MOCK_API === 'true') {
       console.log("Using mock API for risk calculation");
       // Simple mock calculation based on total score
-      const totalScore = request.answers.reduce((sum, answer) => sum + answer.score, 0);
+      const totalScore = request.selections.reduce((sum, selection) => {
+        const question = mockQuestions.find(q => q.id === selection.questionId);
+        if (question) {
+          const answer = question.answers.find(a => a.id === selection.answerId);
+          if (answer) {
+            return sum + answer.score;
+          }
+        }
+        return sum;
+      }, 0);
       if (totalScore <= 5) return "Conservative";
       if (totalScore <= 10) return "Moderate";
       return "Aggressive";
@@ -76,7 +87,16 @@ export const QuestionnaireService = {
     } catch (error) {
       console.error("Failed to calculate risk:", error);
       // Fallback to mock calculation
-      const totalScore = request.answers.reduce((sum, answer) => sum + answer.score, 0);
+      const totalScore = request.selections.reduce((sum, selection) => {
+        const question = mockQuestions.find(q => q.id === selection.questionId);
+        if (question) {
+          const answer = question.answers.find(a => a.id === selection.answerId);
+          if (answer) {
+            return sum + answer.score;
+          }
+        }
+        return sum;
+      }, 0);
       if (totalScore <= 5) return "Conservative";
       if (totalScore <= 10) return "Moderate";
       return "Aggressive";

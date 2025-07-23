@@ -21,7 +21,12 @@ export async function initApi() {
         (error: any) => {
             if (error.response) {
                 console.error("API Error:", error.response.data);
-                throw new Error(error.response.data.message || "An error occurred");
+                const errorData = error.response.data;
+                if (typeof errorData === 'object' && errorData !== null && errorData.message) {
+                    throw new Error(errorData.message);
+                } else {
+                    throw new Error("An error occurred");
+                }
             } else if (error.request) {
                 console.error("Network Error:", error.request);
                 throw new Error("Network error - no response received");

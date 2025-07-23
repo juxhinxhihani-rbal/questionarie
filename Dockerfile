@@ -3,7 +3,7 @@ FROM artifacts.rbi.tech/docker-io-docker-proxy/node:22-bullseye-slim AS build
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci --prefer-offline --no-audit
+RUN npm cache clean --force && rm -rf node_modules && npm ci --prefer-offline --no-audit
 COPY . .
 RUN npm run build
 

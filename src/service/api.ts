@@ -17,8 +17,8 @@ export async function initApi() {
     });
 
     api.interceptors.response.use(
-        (response) => response,
-        (error) => {
+        (response: any) => response,
+        (error: any) => {
             if (error.response) {
                 console.error("API Error:", error.response.data);
                 throw new Error(error.response.data.message || "An error occurred");
@@ -30,4 +30,5 @@ export async function initApi() {
                 throw new Error("Error setting up the request");
             }
         }
+    )
 }

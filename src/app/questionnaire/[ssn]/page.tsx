@@ -12,7 +12,6 @@ export function generateStaticParams() {
 
 // Allow dynamic params that aren't pre-generated
 export const dynamicParams = true;
-}
 
 interface PageProps {
   params: {

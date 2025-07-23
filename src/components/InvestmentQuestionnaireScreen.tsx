@@ -37,7 +37,6 @@ export default function InvestmentQuestionnaireScreen({
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [showSummary, setShowSummary] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [ssnTouched, setSsnTouched] = useState(false);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -87,8 +86,6 @@ export default function InvestmentQuestionnaireScreen({
   const isSsnValid = useMemo(() => {
     return !formData.ssn || formData.ssn.trim().length >= 8;
   }, [formData.ssn]);
-
-  const showSsnError = ssnTouched && !isSsnValid && formData.ssn;
   useEffect(() => {
     // Calculate risk when form is valid
     if (isFormValid) {
@@ -237,38 +234,6 @@ export default function InvestmentQuestionnaireScreen({
           </h2>
 
           <form className="space-y-6 bg-gray-50 p-6 rounded-xl shadow" onSubmit={(e) => e.preventDefault()}>
-            {/* SSN Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("ssn")} <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.ssn}
-                onChange={(e) => handleInputChange("ssn", e.target.value)}
-                onBlur={handleSsnBlur}
-                readOnly={hasSsnInRoute}
-               minLength={8}
-               maxLength={14}
-                className={`w-full p-3 border rounded-lg transition-colors ${
-                  hasSsnInRoute 
-                    ? "bg-gray-50 cursor-not-allowed border-gray-300" 
-                    : `bg-white ${
-                        showSsnError
-                          ? "border-red-500 focus:ring-2 focus:ring-red-500 focus:border-red-500" 
-                          : "border-gray-300 focus:ring-2 focus:ring-[#FFD700] focus:border-transparent"
-                      }`
-                }`}
-                placeholder={hasSsnInRoute ? "" : t("ssn.placeholder")}
-                required
-              />
-              {showSsnError && (
-                <p className="mt-1 text-sm text-red-600">
-                  {t("ssn.min.length")}
-                </p>
-              )}
-            </div>
-
             {/* Dynamic Questions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {questions.map((question) => (
@@ -329,10 +294,7 @@ export default function InvestmentQuestionnaireScreen({
                     {(!isFormValid || !isSsnValid) && (
                       <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 w-max opacity-0 group-hover:opacity-100 transition-opacity z-50">
                         <div className="bg-gray-900 text-white text-xs py-2 px-3 rounded-lg shadow-lg whitespace-nowrap">
-                          {!isSsnValid && formData.ssn 
-                            ? t("ssn.min.length")
-                            : t("please.complete.form")
-                          }
+                          {t("please.complete.form")}
                           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-gray-900"></div>
                         </div>
                       </div>
